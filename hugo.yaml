@@ -20,7 +20,7 @@ params:
     palette: catppuccin-macchiato
 
   about:
-    logo: images/hyperparabolic.png
+    logo_image: ./images/hyperparabolic.png
     title: Spencer Balogh
     description: "Software engineer. Identity specialist. NixOS enthusiast."
 
