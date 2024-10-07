@@ -10,9 +10,6 @@ enableInlineShortcodes: true
 # Automatically add content sections to main menu
 sectionPagesMenu: main
 
-pagination:
-  pagerSize: 3
-
 params:
   noindex: false
 
