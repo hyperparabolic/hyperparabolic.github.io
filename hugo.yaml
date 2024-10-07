@@ -1,0 +1,79 @@
+baseURL: https://blog.decent.id/
+theme: risotto
+title: blog.decent.id
+author: Spencer Balogh
+copyright: © 2024 [Spencer Balogh](https://blog.decent.id). [License](https://github.com/hyperparabolic/hyperparabolic.github.io/blob/main/LICENSE.md).
+languageCode: en-us
+DefaultContentLanguage: en-us
+enableInlineShortcodes: true
+
+# Automatically add content sections to main menu
+sectionPagesMenu: main
+
+pagination:
+  pagerSize: 3
+
+params:
+  noindex: false
+
+  theme:
+    palette: catppuccin-macchiato
+
+  about:
+    logo: images/hyperparabolic.png
+    title: Spencer Balogh
+    description: "Software engineer. Identity specialist. NixOS enthusiast."
+
+  socialLinks:
+    - icon: fa-brands fa-github
+      title: GitHub
+      url: https://github.com/hyperparabolic
+    - icon: fa-brands fa-keybase
+      title: Keybase
+      url: https://keybase.io/hyperparabolic
+
+  footer:
+    builtWith: Hosted by [GitHub](https://pages.github.com/). Built with [Hugo](https://gohugo.io/) and [risotto](https://risotto.joeroe.io/).
+
+menu:
+  main:
+    - identifier: about
+      name: About
+      url: /about/
+      weight: 10
+
+taxonomies:
+  tag: tags
+  category: categories
+  series: series
+
+markup:
+  goldmark:
+    renderer:
+      unsafe: true
+  tableOfContents:
+    startLevel: 2
+    endLevel: 3
+    ordered: true
+
+privacy:
+  vimeo:
+    disabled: false
+    simple: true
+  twitter:
+    disabled: false
+    enableDNT: true
+    simple: true
+  instagram:
+    disabled: false
+    simple: true
+  youtube:
+    disabled: false
+    privacyEnhanced: true
+
+services:
+  instagram:
+    disableInlineCSS: true
+  twitter:
+    disableInlineCSS: true
+
