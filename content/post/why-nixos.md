@@ -24,7 +24,12 @@ I knew enough that I took the plunge on physical machines last year.
 
 ## Flakes
 
-NixOS can be used without flakes, but I haven't used it without them personally. Flakes are still technically an *experimental feature*. What does that actually mean?
+NixOS can be used without flakes, but I haven't used it without them personally. Flakes introduced an entire flake ecosystem to nix, but there are two features that really drove me to using them:
+
+- Flakes introduced a standard way to specify package dependency version pinning with a lockfile and tooling around this, instead of just specifying a release channel.
+- Flakes can import flakes, so this dependency management extends into source code.
+
+Flakes are still technically an *experimental feature*. What does that actually mean?
 
 "Experimental" here is more about communicating promises of API stability. It's still experiemental because there may be breaking changes with flakes going forward. Personally I don't mind the idea that I might have to rewrite some flakes, and I think the utility of them is nice enough to justify their use. The fact that they have been experimental for so long does come with some downsides. Experimental features do have to be explicitly opted into. The [official nixos documentation](https://nixos.org/learn/) also only covers "stable" features, so external documentation like the [NixOS wiki](https://wiki.nixos.org/) or other blogs need to be referenced to find a lot of details about it. I got a lot of value out of [zero-to-nix](https://zero-to-nix.com/) and the [NixOS & Flakes Book](https://nixos-and-flakes.thiscute.world/) personally.
 
