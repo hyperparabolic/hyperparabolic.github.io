@@ -24,12 +24,7 @@ I knew enough that I took the plunge on physical machines last year.
 
 ## Flakes
 
-NixOS can be used without flakes, but I haven't used it without them personally. Flakes introduced an entire flake ecosystem to nix, but there are two features that really drove me to using them:
-
-- Flakes introduced a standard way to specify package dependency version pinning with a lockfile and tooling around this, instead of just specifying a release channel.
-- Flakes can import flakes, so this dependency management extends into source code.
-
-Flakes are still technically an *experimental feature*. What does that actually mean?
+NixOS can be used without flakes, but I haven't used it without them personally. Flakes introduced a standard way to write nix expressions with dependency version pinning in a lock file `flake.lock`.  Flakes are still technically an *experimental feature*. What does that actually mean?
 
 "Experimental" here is more about communicating promises of API stability. It's still experiemental because there may be breaking changes with flakes going forward. Personally I don't mind the idea that I might have to rewrite some flakes, and I think the utility of them is nice enough to justify their use. The fact that they have been experimental for so long does come with some downsides. Experimental features do have to be explicitly opted into. The [official nixos documentation](https://nixos.org/learn/) also only covers "stable" features, so external documentation like the [NixOS wiki](https://wiki.nixos.org/) or other blogs need to be referenced to find a lot of details about it. I got a lot of value out of [zero-to-nix](https://zero-to-nix.com/) and the [NixOS & Flakes Book](https://nixos-and-flakes.thiscute.world/) personally.
 
@@ -103,7 +98,9 @@ $ ls -al /nix/store/*-curl-*
 
 ```
 
-My current packages and dev environments have dependencies on multiple different versions of libcurl, but on top of that they rely on multiple different libcurl 8.9.1 shared objects. These might be differently configured versions of the same libcurl source code, or these might even be different versions of libcurl code that aren't differentiated with a different release version / tag. Personally I think this is a worthwhile trade-off. RAM and disk space are cheap, and I'd rather sacrifice a small amount of each so that consumers of libcurl can get the exact version they want. This is a small cost to avoid issues that are typical with dynamic linking even when dynamic linking is explicitly expected.  I don't think I'm alone with this risk assessment.  Most build systems for modern programming languages seem to be pushing toward static linking for most use cases.
+My current packages and dev environments have dependencies on multiple different versions of libcurl, but on top of that they rely on multiple different libcurl 8.9.1 shared objects. These might be differently configured versions of the same libcurl source code, or these might even be different versions of libcurl code that aren't differentiated with a different release version / tag. Each of the binaries in the nix store is patched with a wrapper that specifies where to find its dynamic dependencies in the nix store.
+
+Personally I think this is a worthwhile trade-off. RAM and disk space are cheap, and I'd rather sacrifice a small amount of each so that consumers of libcurl can get the exact version they want. This is a small cost to avoid issues that are typical with dynamic linking even when dynamic linking is explicitly expected.  I don't think I'm alone with this risk assessment.  Most build systems for modern programming languages seem to be pushing toward static linking for most use cases.
 
 Due to package pinning with flakes, all of my NixOS systems have the exact same curl library versions (minus whatever is only installed with `nix develop`), regarldless of what version of nixpkgs was live at build time.
 
