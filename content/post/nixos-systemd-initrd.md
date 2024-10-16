@@ -56,6 +56,8 @@ This was the easiest way to debug for me personally. I was exploring one booting
 
 #### Network config:
 
+<mark>EDIT:</mark> This seems to just be a regression? It is intended that setting `boot.initrd.network.enable = true;` (notice, not `boot.initrd.systemd.network.enable`) should automatically configure the intird network based on `networking.interfaces.*`. Try that before this.
+
 Network config changes slightly with a systemd based initd. Network interfaces don't automatically get set up based on your `networking.interfaces.*` config, and you will instead need to write a systemd networkd based config. Here's a simple example of what that might look like:
 
 ```nix
@@ -112,9 +114,13 @@ I'd also strongly recommend using a non-default port here to avoid your ssh clie
 
 Once this is all configured, you can ssh into the booting system with `ssh -p 2222 root@<ip address>` and query with `systemctl`.
 
-#### Maybe alternatives: debug kernel parameters?
+#### Alternatives: debug kernel parameters
 
-As of when I was working through this, these weren't all implemented. I'll still mention them because I'm sure equivalents will be implemented eventually. These can either be added as kernel parameters in your bootloader, or in your NixOS config. Some useful ones are documented in the [NixOS Manual](https://nixos.org/manual/nixos/stable/#sec-boot-problems).
+Debugging can also be done on a single system. Use of these kernel parameters requires setting `boot.initrd.systemd.emergencyAccess` (either true for unauthenticated access, or set a password hash).
+
+`rd.systemd.unit=rescue.target` forces your system into rescue mode in stage 1.
+
+`rd.systemd.debug_shell` starts a debug shell on tty9 (<kbd><kbd>ctrl</kbd> + <kbd>alt</kbd> + <kbd>F9</kbd></kbd>).
 
 ## Gotchas
 
@@ -124,7 +130,7 @@ There are a few differences in the systemd initrd shell environment compared to 
 
 A lot of the process management tooling that was previously available is no longer included. Everything is a systemd unit in the systemd initrd, so you can just use `systemctl` for process management instead.
 
-I found I didn't need it, but if there is some binary you require in your initrd environment, `boot.initrd.systemd.storePaths` allows you to specify individual binaries or entire packages to copy to your initrd environment.
+I found I didn't need it, but if there is some binary you require in your initrd environment, `boot.initrd.systemd.storePaths` allows you to specify individual binaries or entire packages to copy to your initrd environment's `/nix/store` fo use in systemd services, or `boot.initrd.systemd.initrdBin` and `boot.initrd.systemd.extraBin` can add binaries to your debug shell's `PATH`.
 
 ### Different home directory for the root user
 
@@ -180,25 +186,22 @@ This script used to populate the root user's `.profile` during `boot.initrd.netw
     ];
     serviceConfig.Type = "oneshot";
     script = ''
-      # load key and kill pending password prompt on ssh
-      echo "zfs load-key rpool/crypt; systemctl restart zfs-import-rpool.service" >> /var/empty/.profile
+      echo "systemctl default" >> /var/empty/.profile
     '';
   };
 ```
 
-This queries for a ZFS password automatically upon `ssh` into the initrd.
+This queries for a ZFS password automatically upon `ssh` into the initrd. Most of these decyrption prompts are now using `systemd-ask-password` for password prompts, so `systemd-tty-ask-password-agent` can be used to hook into that prompt, or just `systemctl default`.
 
 ## Let me know how it goes for you
 
 I'd happily add anybody else's lessons learned here as well.
 
+Thanks to [ElvishJerricco](https://discourse.nixos.org/u/ElvishJerricco), the primary author of stage 1 systemd boot for feedback on this article.
+
 ## Future plans
 
 This gives you the ability to script anything, at any point during the boot process
 
-I don't know if I'll make this migration proactively or just passively whenever I image new systems here from now on, but I plan to use this to make my drive encryption strategies consistent across all of my machines. Right now my desktops utilize ZFS native encryption. This isn't perfect, but it has one really nice benefit: `zfs send` and `zfs receive` to drive short term backup strategies with encryption. The main downside of this is that ZFS native encryption doesn't support key rotation without copying all of your data. This isn't a huge deal when I'm at home. I have multiple machines available and a good bit of storage around.
-
-This is significantly less nice when I only have one machine available on the go. My machines that travel use ZFS on LUKS for encryption for some more key management flexibility.
-
-I want to try to use LUKS on a ZVol to store file encryption keys for my encrypted datasets instead, and this should be usable to script that unlock process. This should give me all of the key management and unlock options of LUKS, the performance of native ZFS encryption (scrubs are slow on ZFS on LUKS), and encrypted `zfs send` / `zfs recceive` backups. We'll see how it goes when I get there.
+I don't know if I'll make this migration proactively or just passively whenever I image new systems here from now on, but I plan to use this to make my drive encryption strategies consistent across all of my machines. Right now my desktops utilize ZFS native encryption. My laptops that leave the house use ZFS on top of LUKS for better key management options. I want to try to use LUKS on a ZVol to store file encryption keys for my encrypted datasets instead, and this should be usable to script that unlock process. This should give me all of the key management and unlock options of LUKS, the performance of native ZFS encryption (scrubs are slow on ZFS on LUKS), and encrypted `zfs send` / `zfs recceive` backups. We'll see how it goes when I get there.
 
