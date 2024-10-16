@@ -6,6 +6,7 @@ copyright: © 2024 [Spencer Balogh](https://blog.decent.id). [License](https://g
 languageCode: en-us
 DefaultContentLanguage: en-us
 enableInlineShortcodes: true
+enableEmoji: true
 
 # Automatically add content sections to main menu
 sectionPagesMenu: main
