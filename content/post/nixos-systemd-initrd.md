@@ -197,6 +197,8 @@ This queries for a ZFS password automatically upon `ssh` into the initrd. Most o
 
 I'd happily add anybody else's lessons learned here as well.
 
+I've posted this as a [guide on the NixOS Discourse](https://discourse.nixos.org/t/migrating-to-boot-initrd-systemd-and-debugging-stage-1-systemd-services/54444), feel free to drop any notes there.
+
 Thanks to [ElvishJerricco](https://discourse.nixos.org/u/ElvishJerricco), the primary author of stage 1 systemd boot for feedback on this article.
 
 ## Future plans
