@@ -56,7 +56,7 @@ This was the easiest way to debug for me personally. I was exploring one booting
 
 #### Network config:
 
-<mark>EDIT:</mark> This seems to just be a regression? It is intended that setting `boot.initrd.network.enable = true;` (notice, not `boot.initrd.systemd.network.enable`) should automatically configure the intird network based on `networking.interfaces.*`. Try that before this.
+<mark>EDIT:</mark> This is another thing that might *just work* for most users. It is intended that setting `boot.initrd.network.enable = true;` (notice, not `boot.initrd.systemd.network.enable`) should automatically configure the intird network based on `networking.interfaces.*`. Try that before explicitly configuring `boot.initrd.systemd.network.networks.*`.
 
 Network config changes slightly with a systemd based initd. Network interfaces don't automatically get set up based on your `networking.interfaces.*` config, and you will instead need to write a systemd networkd based config. Here's a simple example of what that might look like:
 
