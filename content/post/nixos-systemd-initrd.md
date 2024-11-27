@@ -92,7 +92,7 @@ This part is identical to ssh config in default boot.
 
 `boot.initrd.secrets` inserts secrets files into the boot process. This is being used to copy a host key into the boot process. This key file can be generated with `ssh-keygen`, and you should really be sure that this file has appropriate permissions (read only access, and only for the root user directly). Replace `/secrets/boot/ssh/ssh_host_ed25519_key` in the sample below with whatever key flavor and location you end up using.
 
-I'd also strongly recommend using a non-default port here to avoid your ssh clients warning you about host key changes.
+I'd also strongly recommend using a dedicated key for this purpose, and a non-default port here to avoid your ssh clients warning you about host key changes.
 
 ```nix
   boot = {
@@ -104,13 +104,15 @@ I'd also strongly recommend using a non-default port here to avoid your ssh clie
         ssh = {
           enable = true;
           port = 2222;
-          hostKeys = [/secrets/boot/ssh/ssh_host_ed25519_key];
+          hostKeys = ["/secrets/boot/ssh/ssh_host_ed25519_key"];
           authorizedKeys = config.users.users.<your user>.openssh.authorizedKeys.keys;
         };
       };
     };
   };
 ```
+
+<mark>Pay close attention to quotes here if you plan to leave these debug holes open.</mark> Using file paths (without double quotes) here can result in these keys being stored readable by all users in the nix store.
 
 Once this is all configured, you can ssh into the booting system with `ssh -p 2222 root@<ip address>` and query with `systemctl`.
 
@@ -200,6 +202,8 @@ I'd happily add anybody else's lessons learned here as well.
 I've posted this as a [guide on the NixOS Discourse](https://discourse.nixos.org/t/migrating-to-boot-initrd-systemd-and-debugging-stage-1-systemd-services/54444), feel free to drop any notes there.
 
 Thanks to [ElvishJerricco](https://discourse.nixos.org/u/ElvishJerricco), the primary author of stage 1 systemd boot for feedback on this article.
+
+Thanks to [jade](https://discourse.nixos.org/u/jade/summary), for notes on paths.
 
 ## Future plans
 
