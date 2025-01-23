@@ -29,7 +29,12 @@ params:
     - icon: fa-brands fa-keybase
       title: Keybase
       url: https://keybase.io/hyperparabolic
-
+    - icon: fa-brands fa-bluesky
+      title: Bluesky
+      url: https://bsky.app/profile/hyperparabolic.bsky.social
+    - icon: fa-solid fa-key
+      title: PGP Key
+      url: https://raw.githubusercontent.com/hyperparabolic/nix-config/refs/heads/main/home/gpg-0xA6C19D1C082670FD-2024-11-14.asc
   footer:
     builtWith: Hosted by [GitHub](https://pages.github.com/). Built with [Hugo](https://gohugo.io/) and [risotto](https://risotto.joeroe.io/).
 
