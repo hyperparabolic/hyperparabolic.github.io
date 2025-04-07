@@ -17,6 +17,19 @@ This post gets into a scheme that allows a single self contained zpool to offer 
 
 <!--more-->
 
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'dark',
+  });
+  mermaid.registerIconPacks([{
+    name: 'material-symbols',
+    loader: () =>
+      fetch('https://unpkg.com/@iconify-json/material-symbols@1/icons.json').then((res) => res.json()),
+  }]);
+</script>
+
 ## Preface: How did we get here?
 
 I tinker a lot with my computers. I've found that with subystems that are inherently stateful (see virtualization, databases, etc) it's very easy to make unaccounted for changes, and it can get difficult to fix things when they break or reproduce them if you replace them. So when I read the blog post [Erase your darlings](https://grahamc.com/blog/erase-your-darlings/), I was instantly fascinated with the idea. I started experimenting with NixOS, and eventually implemented the idea on my desktop. I liked it enough that I've implemented it everywhere.
