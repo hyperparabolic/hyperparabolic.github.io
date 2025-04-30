@@ -35,6 +35,9 @@ params:
     - icon: fa-solid fa-key
       title: PGP Key
       url: https://raw.githubusercontent.com/hyperparabolic/nix-config/refs/heads/main/home/gpg-0xA6C19D1C082670FD-2024-11-14.asc
+    - icon: fa-solid fa-rss
+      title: RSS Feed
+      url: https://blog.decent.id/post/index.xml
   footer:
     builtWith: Hosted by [GitHub](https://pages.github.com/). Built with [Hugo](https://gohugo.io/) and [risotto](https://risotto.joeroe.io/).
 
