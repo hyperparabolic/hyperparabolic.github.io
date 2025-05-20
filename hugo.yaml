@@ -34,7 +34,7 @@ params:
       url: https://bsky.app/profile/hyperparabolic.bsky.social
     - icon: fa-solid fa-key
       title: PGP Key
-      url: https://raw.githubusercontent.com/hyperparabolic/nix-config/refs/heads/main/home/gpg-0xA6C19D1C082670FD-2024-11-14.asc
+      url: https://raw.githubusercontent.com/hyperparabolic/nix-config/refs/heads/main/home/gpg-0x37CE23CFC62D8A49-2025-05-19.asc
     - icon: fa-solid fa-rss
       title: RSS Feed
       url: https://blog.decent.id/post/index.xml
