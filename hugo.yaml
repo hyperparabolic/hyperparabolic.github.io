@@ -47,6 +47,10 @@ menu:
       name: About
       url: /about/
       weight: 10
+    - identifier: tags
+      name: Tags
+      url: /tags/
+      weight: 11
 
 taxonomies:
   tag: tags
