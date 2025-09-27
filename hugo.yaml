@@ -26,6 +26,9 @@ params:
     - icon: fa-brands fa-github
       title: GitHub
       url: https://github.com/hyperparabolic
+    - icon: fa-solid fa-envelope
+      title: Email
+      url: mailto:hi@decent.id
     - icon: fa-brands fa-keybase
       title: Keybase
       url: https://keybase.io/hyperparabolic

@@ -24,4 +24,4 @@ Hey! I'm Spencer.
 
 ## Contact
 
-I haven't made a catch-all email or a contact form yet. If the socials in the aside don't work for you, you could always [open a GitHub Issue in this repo](https://github.com/hyperparabolic/hyperparabolic.github.io/issues) to get a hold of me in a pinch.
+If the socials in the aside don't work for you, you could always [open a GitHub Issue in this repo](https://github.com/hyperparabolic/hyperparabolic.github.io/issues) to get a hold of me in a pinch.
