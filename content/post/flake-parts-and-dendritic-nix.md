@@ -207,11 +207,17 @@ I'm putting it off until I refactor more and have to make a decision, and I'll m
 
 ## Thoughts
 
+I had already been considering refactoring more of my config into `nixosModules` and `homeManagerModules`. There's value to being able to tweak behavior with options, and I found this especially useful while incrementally adopting new boot and zfs changes in my zfs nixosModule. The dendritic pattern fills the same want and was easier to implement.
 
+Also, eventually I know I'll run into a situation where I need to use nix as a package manager on another os, and I'll want to leverage this repo and home-manager to keep the familiarity of home setups. Dendritic nix has made it relatively intuitive to clean up some of the ugliest corners of my repo where I've run into pain points around this.
+
+I think repo-level bootstrapping will only be easier. You can add a whole nixosConfiguration with stub configs *anywhere* in the modules directory. Organization into the `hosts` and `flake-parts` module directories is just book-keeping to keep things sane in the long term, but a top level stub module is perfect for something you're going to refactor away anyway like a `_hardware-configuration.nix`. Those scripts won't need to be refactored next time I decide I want to reorganize differently.
+
+I like it overall. I think there's some nice flexibility that should help adopt some ideas I've been toying with (SDN and private config partitions in particular). I'm less annoyed with new problems than problems I had before, and I don't think it's just new problem smell. It's not a revolution, but a different pattern makes you think about your problems differently, and I think this particular pattern makes it a smaller lift to write better modules.
 
 ## Links
 
-Rewriting things into my own words helps me refine and retain thoughts, but most of this is a re-implementation of other people's thoughts and ideas.
+Rewriting things into my own words helps me refine and retain thoughts, but a lot of this is a re-implementation of other people's thoughts and ideas.
 
 Here are some of the places I learned from and drew inspiration from:
 
