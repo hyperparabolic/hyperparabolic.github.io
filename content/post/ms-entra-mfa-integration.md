@@ -60,7 +60,7 @@ When specifying `values` requirements as a part of the claims parameter, the spe
 
 ### Not so standard `id_token_hint`
 
-I definitely understand why [signed OIDC requests](https://openid.net/specs/openid-connect-core-1_0.html#SignedRequestObject) aren't being used here.  It's very underspecified as a part of the OIDC spec, and I wouldn't want to deal with integration mess from all of the "standard" implementations either. I am still ran into a few things that were surprising about their use of `id_token_hint`.
+I definitely understand why [signed OIDC requests](https://openid.net/specs/openid-connect-core-1_0.html#SignedRequestObject) aren't being used here.  It's very under-specified as a part of the OIDC spec, and I wouldn't want to deal with integration mess from all of the "standard" implementations either. I am still ran into a few things that were surprising about their use of `id_token_hint`.
 
 #### Standard `id_token_hint`
 
@@ -70,7 +70,7 @@ The OIDC spec defines `id_token_hint` as an optional parameter containing an `id
 
 > the OP MUST validate that it was the issuer of the ID Token.
 
-Along with suggesting that expired tokens are fine for use in the `id_token_hint` parameter, and that the `aud` does not have to be the IDP (after all, the idenity token was issued to an external audience).
+Along with suggesting that expired tokens are fine for use in the `id_token_hint` parameter, and that the `aud` does not have to be the IDP (after all, the identity token was issued to an external audience).
 
 #### Integration implementation and differences
 

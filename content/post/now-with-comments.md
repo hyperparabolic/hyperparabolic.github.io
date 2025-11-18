@@ -7,7 +7,7 @@ tags:
   - blog.decent.id
 ---
 
-I've wanted comments here for a second, but this is a static site (GitHub pages) and I've always had some dealbreaker turnoff with every embeddable option I've looked into. I saw [giscus](https://giscus.app) recently and thought it looks pretty nice.
+I've wanted comments here for a second, but this is a static site (GitHub pages) and I've always had some deal breaker turnoff with every embeddable option I've looked into. I saw [giscus](https://giscus.app) recently and thought it looks pretty nice.
 
 <!--more-->
 

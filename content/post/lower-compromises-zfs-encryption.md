@@ -13,7 +13,7 @@ toc: true
 
 I've started using a ZFS root filesystem on all of my computers now. Various wants on different systems have led to me using ZFS native encryption on some systems, and ZFS on LVM on LUKS on some others. I've had a chance to feel out both options, and I've learned a bunch in the meantime, so I decided to try something else now.
 
-This post gets into a scheme that allows a single self contained zpool to offer LUKS key managent and unlocking options on NixOS.
+This post gets into a scheme that allows a single self contained zpool to offer LUKS key management and unlocking options on NixOS.
 
 <!--more-->
 
@@ -32,7 +32,7 @@ This post gets into a scheme that allows a single self contained zpool to offer 
 
 ## Preface: How did we get here?
 
-I tinker a lot with my computers. I've found that with subystems that are inherently stateful (see virtualization, databases, etc) it's very easy to make unaccounted for changes, and it can get difficult to fix things when they break or reproduce them if you replace them. So when I read the blog post [Erase your darlings](https://grahamc.com/blog/erase-your-darlings/), I was instantly fascinated with the idea. I started experimenting with NixOS, and eventually implemented the idea on my desktop. I liked it enough that I've implemented it everywhere.
+I tinker a lot with my computers. I've found that with subsystems that are inherently stateful (see virtualization, databases, etc) it's very easy to make unaccounted for changes, and it can get difficult to fix things when they break or reproduce them if you replace them. So when I read the blog post [Erase your darlings](https://grahamc.com/blog/erase-your-darlings/), I was instantly fascinated with the idea. I started experimenting with NixOS, and eventually implemented the idea on my desktop. I liked it enough that I've implemented it everywhere.
 
 ### The Erase your darlings TLDR:
 
@@ -68,7 +68,7 @@ Details of exactly what files a service needs to maintain through reboots are co
 
 I personally manage the "I erase my systems at every boot." part of it with a systemd service. I transitioned to using a systemd based initrd a while back partially to enable this project, and details on that rollback service and migration are documented in an [previous blog post](https://blog.decent.id/post/nixos-systemd-initrd/#impermanence-rollback). My root partition dataset has a blank snapshot from when it was provisioned, and I roll back to that blank snapshot immediately before mounting it. NixOS has everything it needs to rebuild the system from this point in the /nix store. It generates the static directories, and overlays the persisted data on top of it.
 
-The implementation of the idea feels just like containerization technology to me. Your root filesytem behaves more like a container image with an immutable starting state. Persisted directories behave like volumes, giving certain files or directories a way to persist through restarts.
+The implementation of the idea feels just like containerization technology to me. Your root filesystem behaves more like a container image with an immutable starting state. Persisted directories behave like volumes, giving certain files or directories a way to persist through restarts.
 
 ### Accumulating some different cruft
 
@@ -81,7 +81,7 @@ Pros:
 
 Cons:
 - ZFS maintenance operations are slooooooooow.
-- `zfs send` backups are't encrypted. Most of my machines do not have local redundancy, so I primarily use this for backups rather than migrations. I don't want them to be accessible on other machines, and don't mind a bit of friction to migrate data to a different machine.
+- `zfs send` backups aren't encrypted. Most of my machines do not have local redundancy, so I primarily use this for backups rather than migrations. I don't want them to be accessible on other machines, and don't mind a bit of friction to migrate data to a different machine.
 
 There is also some slight difference in dataset topography between the two system types. This isn't difficult to manage, but I do forget sometimes.
 
@@ -235,7 +235,7 @@ in {
       # and just repeatedly mounts and polls status).
       description = "Import rpool before cryptsetup.target";
       # device dependencies allow us to avoid deprecated systemd-udev-settle.service
-      # these could bepartition labels instead, or replaced with pool status polling
+      # these could be partition labels instead, or replaced with pool status polling
       wants = ["dev-nvme0n1p2.device"];
       after = ["dev-nvme0n1p2.device"];
       wantedBy = [
@@ -315,4 +315,4 @@ I don't know if or when I'll get around to these next, but like the systemd init
 - Unattended system updates
 - Hydra CI?
 
-A few of these together could solve a long-standing issue I've had for drive encryption. In my setup, decyrption of sops secrets relies on age keys derived from ssh keys that are stored in the encrypted, persisted datasets. Consequently, I haven't had a great way to manage secrets that are needed before that can be mounted (primarily an issue for zfs remote encryption unlocks at the moment). With a TPM unlock and secureboot, this gives me a reasonable way to secure secrets earlier in initrd for anything really (network authentication, vpn authentication, etc).
+A few of these together could solve a long-standing issue I've had for drive encryption. In my setup, decryption of sops secrets relies on age keys derived from ssh keys that are stored in the encrypted, persisted datasets. Consequently, I haven't had a great way to manage secrets that are needed before that can be mounted (primarily an issue for zfs remote encryption unlocks at the moment). With a TPM unlock and secureboot, this gives me a reasonable way to secure secrets earlier in initrd for anything really (network authentication, vpn authentication, etc).

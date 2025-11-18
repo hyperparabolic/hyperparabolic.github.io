@@ -63,7 +63,7 @@ Due to the features above, most people who use this pattern set up automatic imp
 
 ### Easy access to context outside the module 
 
-Modules co-located in a single file have access to a shared `let in` statement. Additionally, every attribute of the top-level flake can be accessed in any module, without having to jump through hoops passing them through [specialArgs](https://wiki.nixos.org/wiki/NixOS_modules#Passing_custom_values_to_modules). This includes any self-defined attributes, allowing flake level options. Most dendritic repos I've seen define `flake.meta` as a freeoform attribute set, and use that for defining global options for every system defined in the flake.
+Modules co-located in a single file have access to a shared `let in` statement. Additionally, every attribute of the top-level flake can be accessed in any module, without having to jump through hoops passing them through [specialArgs](https://wiki.nixos.org/wiki/NixOS_modules#Passing_custom_values_to_modules). This includes any self-defined attributes, allowing flake level options. Most dendritic repos I've seen define `flake.meta` as a freeform attribute set, and use that for defining global options for every system defined in the flake.
 
 ### Modules are a part of outputs
 
@@ -73,7 +73,7 @@ Modules aren't useful outside of your config unless you structure them to be use
 
 My flake relies on services that are defined in my flake. Downtime of my nix-serve cache would slow down builds considerably. Downtime of my internal hydra, notification, or observability tooling would mean manually inspecting servers for health.
 
-I'm also quite attached to my git history. When your files have to be organized by import strucutre, looking at commit history can be the best way to hunt down all of the config that is associated with a change. I also don't keep around a lot of cruft, so it's the easiest way to get a hold of past iterations on an idea.
+I'm also quite attached to my git history. When your files have to be organized by import structure, looking at commit history can be the best way to hunt down all of the config that is associated with a change. I also don't keep around a lot of cruft, so it's the easiest way to get a hold of past iterations on an idea.
 
 Between these, I knew I couldn't do a migration from scratch and had to do an incremental migration.
 
@@ -123,7 +123,7 @@ $ nix build .#nixosConfigurations.<name>.config.system.build.toplevel && nix run
 
 If you're on the system you're developing, replacing `<name>` with the name of your nixosConfiguration and running that command will highlight any changes made since you last performed a `nixos-rebuild switch` or booted a new `nixos-rebuild boot` entry. You can also build another system locally, you'll just have to build your own diffing command and keep track of your own links (check out `nix build --help`).
 
-I tried out both [dix](https://github.com/faukah/dix) and [nix-diff](https://github.com/Gabriella439/nix-diff) diffing tools, and generally found `dix` to have the better level of verbosity for me. There are generated elements of your derivation that can change order every build. This is really anything generated using functions like `map`, `genAttrs`, `mapAttrs`, `attrValues`, or similar iteration. For me, this regularly included order-related noise around PATH, flake repositories, man files, and fish autocompletions. You might like the extra verbosity of `nix-diff` or something else if you have less order thrash than me. Try out a couple and see what you like.
+I tried out both [dix](https://github.com/faukah/dix) and [nix-diff](https://github.com/Gabriella439/nix-diff) diffing tools, and generally found `dix` to have the better level of verbosity for me. There are generated elements of your derivation that can change order every build. This is really anything generated using functions like `map`, `genAttrs`, `mapAttrs`, `attrValues`, or similar iteration. For me, this regularly included order-related noise around PATH, flake repositories, man files, and fish auto-completions. You might like the extra verbosity of `nix-diff` or something else if you have less order thrash than me. Try out a couple and see what you like.
 
 ### Keep it simple, refactor later
 
@@ -159,7 +159,7 @@ topLevel: {
 }
 ```
 
-and at the bottom of `montiors.nix`:
+and at the bottom of `monitors.nix`:
 
 ```nix
 {
@@ -194,11 +194,11 @@ This feels like the lowest sacrifice compromise I've found for this problem so f
 
 This isn't really a unique problem to dendritic nix, but I do think it will likely accelerate a problem unique to heavy module use for me.
 
-`nixd` evaluates a specific system's configuration to detect options and provide auto-completion. The dendritic pattern pushes you toward leveraging conditional importing of modules to control what config is included in a system. As you write more modules with options, the odds of having a sytem that includes every module decreases if you have multiple systems. home-manager module options also only show up in `nixd` if they are defined in `home-manager.sharedModules`.
+`nixd` evaluates a specific system's configuration to detect options and provide auto-completion. The dendritic pattern pushes you toward leveraging conditional importing of modules to control what config is included in a system. As you write more modules with options, the odds of having a system that includes every module decreases if you have multiple systems. home-manager module options also only show up in `nixd` if they are defined in `home-manager.sharedModules`.
 
 Right now oak is exposed to every option so it's the host I use for [configuring nixd](https://github.com/hyperparabolic/nix-config/blob/main/modules/core/helix/languages.nix#L75) for now, but that might not be the case moving forward.
 
-I might try to make a dummy host that imports every module but never gets evaluated to work around this. Conflicting `mkForce` options would make this idea more complicated, but this could be worked around be replacing `mkForce` with `mkOverride` and twiddling with values close to 50, or defining those options with `mkStrict` in that system's config as they come up. This might be the lowest effort, and it confines weirdness to a single file or directory, but it's finnicky.
+I might try to make a dummy host that imports every module but never gets evaluated to work around this. Conflicting `mkForce` options would make this idea more complicated, but this could be worked around be replacing `mkForce` with `mkOverride` and twiddling with values close to 50, or defining those options with `mkStrict` in that system's config as they come up. This might be the lowest effort, and it confines weirdness to a single file or directory, but it's finicky.
 
 I might have to bite the bullet and make all of my modules global imports, and utilize options to enable and disable them at the host level. Certainly a bit more effort, and it requires changes across many modules, but it's elegant.
 

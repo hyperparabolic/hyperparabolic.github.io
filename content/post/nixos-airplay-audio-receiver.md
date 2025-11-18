@@ -15,7 +15,7 @@ I've been bought into the Apple ecosystem for a while now for phones. This might
 
 Regardless of what audio streaming technology you use, I've always felt the market for products that connect "legacy" media is lacking. Just about everything that streams audio from a physical input is priced as a luxury product, and it's rare to not have some kind of additional ecosystem lock-in that comes with it. I've been iterating on several different homebrewed solutions for a while now.
 
-Past iterations were built with a raspberry pi running Darkice / Icecast, streaming an internet radio station to my phone and allowing mobile to stream to devices over AirPlay. I found that solution a little finnicky / fragile, and was always interested in removing my phone from the equation. I kept iterating on it and finally landed on a really nice franken-solution utilizing PipeWire and MPD. As a bonus, it also streams internet radio stations, can be controlled remotely by Home Assistant, and has a local user interface.
+Past iterations were built with a raspberry pi running Darkice / Icecast, streaming an internet radio station to my phone and allowing mobile to stream to devices over AirPlay. I found that solution a little finicky / fragile, and was always interested in removing my phone from the equation. I kept iterating on it and finally landed on a really nice franken-solution utilizing PipeWire and MPD. As a bonus, it also streams internet radio stations, can be controlled remotely by Home Assistant, and has a local user interface.
 
 All of this is running on my NixOS host redbud. This system is a retired laptop that I use as a metrics server, so I moved it to my living room and it lives under my record player so it can fill another niche.
 

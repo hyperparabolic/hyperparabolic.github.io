@@ -10,7 +10,7 @@ tags:
 toc: true
 ---
 
-I recent transitoned to using `boot.initrd.systemd.enable = true` on NixOS. It wasn't terrible to figure out, but I did have some migrations to figure out for my boot process customizations. This is the blog post I wish I had to read first regardless :sweat_smile:.
+I recent transitioned to using `boot.initrd.systemd.enable = true` on NixOS. It wasn't terrible to figure out, but I did have some migrations to figure out for my boot process customizations. This is the blog post I wish I had to read first regardless :sweat_smile:.
 
 For many system configurations, transitioning to a systemd based initrd process will *just work* with the one config line above. This post gets into config patterns that typically require migration, what my personal migration looked like, and advice for debugging boot processes for any migration.
 
@@ -32,7 +32,7 @@ The default boot process in NixOS implements this as a procedural script. Option
 
 Along with all of the complexity of systemd, you get all of the complexity of systemd :wink:. 
 
-Implementing customizations requires knowledge of implementing systemd services, but you get to leverage this as well. Systemd imlpements an interface for manging complex dependencies between services. Generally, more processes are able to occur concurrently without explicitly implementing concurrency. Systemd may also abstract away a lot of complex implementation. For example, systemd-networkd trivializes management of network interfaces during startup time, and processes that must implement polling (external network dependencies as an example) may implement polling processes using systemd (`Restart*` and `StartLimit*` service config).
+Implementing customizations requires knowledge of implementing systemd services, but you get to leverage this as well. Systemd implements an interface for managing complex dependencies between services. Generally, more processes are able to occur concurrently without explicitly implementing concurrency. Systemd may also abstract away a lot of complex implementation. For example, systemd-networkd trivializes management of network interfaces during startup time, and processes that must implement polling (external network dependencies as an example) may implement polling processes using systemd (`Restart*` and `StartLimit*` service config).
 
 This doesn't necessarily mean that boot processes are definitely faster. There is overhead to this concurrency management. For me, the limiting factor is usually disk decryption regardless. The bootup time isn't meaningfully long compared to decryption password entry. I personally am switching to this to leverage dependency management in boot process customizations in the future.
 
@@ -146,7 +146,7 @@ Both of these were pretty easy to replace with systemd oneshot services. The onl
 
 ### Impermanence rollback
 
-I utilize ZFS rollbacks to drive my [impermanence](https://github.com/nix-community/impermanence) setup. I might post about this at some later point, but the general idea is that your filesystem is ephemeral, and you use impermanance to explicitly persist files between reboots. These persisted directories act similarly to docker file volumes, and eliminate config drift outside of when you explicitly allow it.
+I utilize ZFS rollbacks to drive my [impermanence](https://github.com/nix-community/impermanence) setup. I might post about this at some later point, but the general idea is that your filesystem is ephemeral, and you use impermanence to explicitly persist files between reboots. These persisted directories act similarly to docker file volumes, and eliminate config drift outside of when you explicitly allow it.
 
 This rollback script used `boot.initrd.postResumeCommands` before. The service config replacement for this looks like:
 
@@ -193,7 +193,7 @@ This script used to populate the root user's `.profile` during `boot.initrd.netw
   };
 ```
 
-This queries for a ZFS password automatically upon `ssh` into the initrd. Most of these decyrption prompts are now using `systemd-ask-password` for password prompts, so `systemd-tty-ask-password-agent` can be used to hook into that prompt, or just `systemctl default`.
+This queries for a ZFS password automatically upon `ssh` into the initrd. Most of these decryption prompts are now using `systemd-ask-password` for password prompts, so `systemd-tty-ask-password-agent` can be used to hook into that prompt, or just `systemctl default`.
 
 ## Let me know how it goes for you
 
@@ -209,5 +209,5 @@ Thanks to [jade](https://discourse.nixos.org/u/jade/summary), for notes on paths
 
 This gives you the ability to script anything, at any point during the boot process
 
-I don't know if I'll make this migration proactively or just passively whenever I image new systems here from now on, but I plan to use this to make my drive encryption strategies consistent across all of my machines. Right now my desktops utilize ZFS native encryption. My laptops that leave the house use ZFS on top of LUKS for better key management options. I want to try to use LUKS on a ZVol to store file encryption keys for my encrypted datasets instead, and this should be usable to script that unlock process. This should give me all of the key management and unlock options of LUKS, the performance of native ZFS encryption (scrubs are slow on ZFS on LUKS), and encrypted `zfs send` / `zfs recceive` backups. We'll see how it goes when I get there.
+I don't know if I'll make this migration proactively or just passively whenever I image new systems here from now on, but I plan to use this to make my drive encryption strategies consistent across all of my machines. Right now my desktops utilize ZFS native encryption. My laptops that leave the house use ZFS on top of LUKS for better key management options. I want to try to use LUKS on a ZVol to store file encryption keys for my encrypted datasets instead, and this should be usable to script that unlock process. This should give me all of the key management and unlock options of LUKS, the performance of native ZFS encryption (scrubs are slow on ZFS on LUKS), and encrypted `zfs send` / `zfs receive` backups. We'll see how it goes when I get there.
 

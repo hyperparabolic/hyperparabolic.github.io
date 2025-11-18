@@ -68,7 +68,7 @@ TPM devices are useful for this specific use case because they can enforce Platf
 
 `systemd-cryptenroll --tpm2-device=auto --wipe-slot=tpm2 --tpm2-pcrs=7+12 <device>`
 
-`--tpm2-device=auto` is fine as long as you don't have multiple TPM devices. I specifially chose to validate against PCR7 and PCR12.
+`--tpm2-device=auto` is fine as long as you don't have multiple TPM devices. I specifically chose to validate against PCR7 and PCR12.
 
 PCR7 validates the system's secureboot state. This ensures that enforcement stays enabled, and the enrolled keys do not change.
 
@@ -102,11 +102,11 @@ Once this was running, I needed to create a hydraJobs output attribute in my fla
 ...
 ```
 
-There were a couple places I was importing from derivations in my nix config, which isn't great practice. IFD isn't permitted in hydraJobs during `nix flake check`, so this is the push I needed to finally get that cleaned up, and I've got guardrails in palce to make sure it can't sneak back in again.
+There were a couple places I was importing from derivations in my nix config, which isn't great practice. IFD isn't permitted in hydraJobs during `nix flake check`, so this is the push I needed to finally get that cleaned up, and I've got guardrails in place to make sure it can't sneak back in again.
 
 All of those toplevel derivations get evaluated on my hydra server. A **lot** of config is shared across multiple hosts. This ensures that any config or packages that aren't pulled from an upstream cache are only built once. I have a [nix-serve](https://github.com/edolstra/nix-serve) cache on the same host, so most updates are just a bunch of local network downloads.
 
-This is also just a great platform to build on. `testers.runNixOSTest` is powerful test runner for complex integration tests where multiple machines interact. It's also a relatively small change to introduce new buildMachines to this setup to distribute building and testing or to introduce new systems for native multiarch builds in the future.
+This is also just a great platform to build on. `testers.runNixOSTest` is powerful test runner for complex integration tests where multiple machines interact. It's also a relatively small change to introduce new buildMachines to this setup to distribute building and testing or to introduce new systems for native multi-arch builds in the future.
 
 ### Automatic system upgrades
 
@@ -126,11 +126,11 @@ I wrote some [workflows](https://github.com/hyperparabolic/nix-config/blob/main/
 
 <mark>This is a little clunky</mark>. With different constraints I would prefer to implement this idea using a [GitHub App](https://docs.github.com/en/apps). I think they have a better access control model than PATs. However I'm building with a small amount of infrastructure, and no ingress from the public internet prevents the use of webhooks. These factors pushed me toward automating with GitHub Actions and accepting the clunkiness below.
 
-It seems like GitHub really doesn't want you automatically writing and approving code changes without human interaction using GitHub Actions. However, I don't really have any meaninful input on these changes. If I'm updating manually, I might not even run a `nix flake check` before attempting to build the new generation, and these changes are going to go through my entire CI process before being deployed. So we got creative to work around this.
+It seems like GitHub really doesn't want you automatically writing and approving code changes without human interaction using GitHub Actions. However, I don't really have any meaningful input on these changes. If I'm updating manually, I might not even run a `nix flake check` before attempting to build the new generation, and these changes are going to go through my entire CI process before being deployed. So we got creative to work around this.
 
 I enforce code signing on my nix-config repo. I can't even bypass this one as the admin. Consequently the author of any automated commits also needs to sign them. I don't really want any software protected keys associated with my personal account floating around, so this pushed me toward making a [bot account](https://github.com/hyperparabolic-bot) specifically for signing.
 
-"Fine-grained" PATs don't support cross organization access yet, so I had to use classic PATs, which could be used to modify any files in repos the account is a contibutor in. I don't really love this, so I started looking into ways to implement file level access control and landed on CODEOWNERS:
+"Fine-grained" PATs don't support cross organization access yet, so I had to use classic PATs, which could be used to modify any files in repos the account is a contributor in. I don't really love this, so I started looking into ways to implement file level access control and landed on CODEOWNERS:
 
 ```
 * @hyperparabolic

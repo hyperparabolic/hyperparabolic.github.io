@@ -31,7 +31,7 @@ This page is also [open source on GitHub](https://github.com/hyperparabolic/hype
 
 ### What's in a name?
 
-decent.id isn't anyting special.  decent.id is a domain I bought that I use for issuing LetsEncrypt certificates to hosts that are routable on my internal network. That will probably be a blog post soon enough!
+decent.id isn't anything special.  decent.id is a domain I bought that I use for issuing LetsEncrypt certificates to hosts that are routable on my internal network. That will probably be a blog post soon enough!
 
 ## Signing off
 
