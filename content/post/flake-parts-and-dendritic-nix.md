@@ -81,10 +81,10 @@ Just about all of the commits associated with the migration are denoted with `fe
 
 ### Start with structure
 
-It doesn't take much to start the incremental migration. My first step was transitioning to `flake-parts`. `flake-parts` has a [flake](https://flake.parts/options/flake-parts.html#opt-flake) option that just accepts raw flake output attributes.  I took my entire flake and provided it to (flake-parts.lib.mkFlake's flake attribute unedited)[https://github.com/hyperparabolic/nix-config/pull/31/commits/8fcc90905676cf0fe29fb36eed0884220698dfda].
+It doesn't take much to start the incremental migration. My first step was transitioning to `flake-parts`. `flake-parts` has a [flake](https://flake.parts/options/flake-parts.html#opt-flake) option that just accepts raw flake output attributes.  I took my entire flake and provided it to [flake-parts.lib.mkFlake's flake attribute unedited](https://github.com/hyperparabolic/nix-config/pull/31/commits/8fcc90905676cf0fe29fb36eed0884220698dfda).
 
 
-The next step is (setting up automatic importing of a modules folder)[https://github.com/hyperparabolic/nix-config/pull/31/commits/50bef40b2a27e6c36dca543e3c5dbe2504e09d1a]. At this point you have a lot of modules that aren't dendritic, but that's really it. In my [first dendritic pr](https://github.com/hyperparabolic/nix-config/pull/31) I migrated most of my flake (exceptions for pieces I wasn't sure I would keep), and a small sampling of default and opt-in nixos and home-manager modules to make sure I liked the structure I was setting up.
+The next step is [setting up automatic importing of a modules folder](https://github.com/hyperparabolic/nix-config/pull/31/commits/50bef40b2a27e6c36dca543e3c5dbe2504e09d1a). At this point you have a lot of modules that aren't dendritic, but that's really it. In my [first dendritic pr](https://github.com/hyperparabolic/nix-config/pull/31) I migrated most of my flake (exceptions for pieces I wasn't sure I would keep), and a small sampling of default and opt-in nixos and home-manager modules to make sure I liked the structure I was setting up.
 
 I did write my own automatic importing. I didn't know if I would run into anything weird during the migration, so I wrote my own that I could freely adjust if needed. At the end I landed on this:
 
