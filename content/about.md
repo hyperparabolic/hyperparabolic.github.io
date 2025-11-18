@@ -20,7 +20,7 @@ Hey! I'm Spencer.
 - I worked on Pocket at [Mozilla](https://mozilla.org).
 - I led an engineering team and wrote a lot of code at [TraitWare](https://traitware.com/).
 - I worked on Jabber and Webex Teams at [Cisco](https://www.cisco.com/).
-- I worked on speech recogniation and language modeling at [Think-A-Move](https://think-a-move.com/#).
+- I worked on speech recognition and language modeling at [Think-A-Move](https://think-a-move.com/#).
 
 ## Contact
 
