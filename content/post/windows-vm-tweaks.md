@@ -57,7 +57,7 @@ I don't mess around with kernel level anti cheat even in my VMs. I found this al
 
 ### VM CPU Config
 
-```
+```xml
   <features>
     <acpi/>
     <apic/>
@@ -80,7 +80,7 @@ I've heard hidden kvm state isn't even necessary with newer nvidia drivers, but 
 
 ### Fix the Damn Clock
 
-```
+```xml
   <clock offset='localtime'>
     <timer name='rtc' tickpolicy='catchup'/>
     <timer name='pit' tickpolicy='delay'/>
